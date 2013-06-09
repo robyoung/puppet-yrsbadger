@@ -2,7 +2,7 @@
 class yrsbadger::serve {
   $app_port = $yrsbadger::app_port
   $log_path = $yrsbadger::log_path
-  $domain = $yrsbadger::domain
+  $domain   = $yrsbadger::domain
   $virtualenv_path = $yrsbadger::virtualenv_path
   $gunicorn_config = "/etc/$domain/gunicorn"
 
@@ -11,9 +11,21 @@ class yrsbadger::serve {
     ensure => present,
     members => ["localhost:$app_port"],
   }
-  nginx::resource::vhost {$yrsbadger::domain:
+  nginx::resource::vhost {$domain:
     ensure => present,
     proxy  => 'http://badger_app',
+  }
+  nginx::resource::location {"$domain static":
+    ensure   => present,
+    vhost    => $domain,
+    location => '/static/',
+    location_alias => "$virtualenv_path/lib/python2.7/site-packages/django/contrib/admin/static/",
+  }
+  nginx::resource::location {"$domain media":
+    ensure         => present,
+    vhost          => $domain,
+    location       => '/media/',
+    location_alias => "$yrsbadger::app_path/media/",
   }
 
   file { "/etc/$domain":
