@@ -10,11 +10,12 @@ class yrsbadger(
   $django_secret_key,
   $git_url = 'git://github.com/robyoung/yrsbadger.git',
 ) {
-  $user        = 'deploy'
-  $group       = 'deploy'
-  $app_port    = 8081
-  $app_path    = "/var/www/$domain"
+  $user            = 'deploy'
+  $group           = 'deploy'
+  $app_port        = 8081
+  $app_path        = "/var/www/$domain"
   $virtualenv_path = "$app_path/venv"
+  $log_path        = "/var/log/$domain"
 
   include yrsbadger::setup
   include yrsbadger::mysql

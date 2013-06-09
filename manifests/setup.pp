@@ -16,7 +16,7 @@ class yrsbadger::setup {
   }
 
   # Set up directories
-  file { ['/var/www', "/var/log/$yrsbadger::title"]:
+  file { ['/var/www', $yrsbadger::log_path]:
     ensure  => directory,
     owner   => $yrsbadger::user,
     group   => $yrsbadger::group,
