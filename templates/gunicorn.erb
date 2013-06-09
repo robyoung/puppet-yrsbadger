@@ -1,6 +1,6 @@
 # YRS Badger gunicorn config
-bind="localhost:<%= app_port %>"
+bind="localhost:<%= @app_port %>"
 workers=4
-accesslog="<%= log_path %>/gunicorn.access.log"
-errorlog="<%= log_path %>/gunicorn.error.log"
-pythonpath="<%= virtualenv_path %>"
+accesslog="<%= @log_path %>/gunicorn.access.log"
+errorlog="<%= @log_path %>/gunicorn.error.log"
+pythonpath="<%= @virtualenv_path %>"

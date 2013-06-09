@@ -9,7 +9,7 @@ class yrsbadger::app {
   $mysql = {
     'database' => $yrsbadger::mysql_database,
     'user'     => $yrsbadger::mysql_user,
-    'passwowd' => $yrsbadger::mysql_password,
+    'password' => $yrsbadger::mysql_password,
   }
   $django = {
     'secret_key' => $yrsbadger::django_secret_key,
@@ -60,6 +60,7 @@ class yrsbadger::app {
   # Sync the database
   exec { "syncdb $yrsbadger::app_name":
     command   => 'python manage.py syncdb --noinput',
+    user      => $yrsbadger::user,
     path      => "$yrsbadger::virtualenv_path/bin",
     cwd       => $yrsbadger::app_path,
     require   => [Python::Pip["MySQL-python==1.2.3c1"], Python::Requirements["$yrsbadger::app_path/requirements.txt"]],

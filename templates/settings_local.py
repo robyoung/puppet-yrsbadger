@@ -12,9 +12,9 @@ EMAIL_USE_TLS = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '<%= @mysql['yrs_database'] %>',
-        'USER': '<%= @mysql['yrs_user'] %>',
-        'PASSWORD': '<%= @mysql['yrs_password'] %>',
+        'NAME': '<%= @mysql['database'] %>',
+        'USER': '<%= @mysql['user'] %>',
+        'PASSWORD': '<%= @mysql['password'] %>',
         'HOST': 'localhost',
         'PORT': '3306',
     }

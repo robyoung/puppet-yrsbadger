@@ -2,8 +2,9 @@
 class yrsbadger::serve {
   $app_port = $yrsbadger::app_port
   $log_path = $yrsbadger::log_path
+  $domain = $yrsbadger::domain
   $virtualenv_path = $yrsbadger::virtualenv_path
-  $gunicorn_config = "/etc/$yrsbadger::domain/gunicorn"
+  $gunicorn_config = "/etc/$domain/gunicorn"
 
   class {'nginx':}
   nginx::resource::upstream {'badger_app':
@@ -26,6 +27,7 @@ class yrsbadger::serve {
     owner   => $yrsbadger::user,
     group   => $yrsbadger::group,
     content => template('yrsbadger/gunicorn.erb'),
+    require => File["/etc/$domain"],
   }
 
   include 'upstart'
@@ -35,8 +37,8 @@ class yrsbadger::serve {
       respawn_limit => '5 10',
       user          => $yrsbadger::user,
       group         => $yrsbadger::group,
-      exec          => "$yrsbadger::virtualenv_path/bin/gunicorn -c $gunicorn_config yrsbadger.wsgi",
+      exec          => "$virtualenv_path/bin/gunicorn -c $gunicorn_config yrsbadger.wsgi",
       chdir         => $yrsbadger::app_path,
-      require       => Class['yrsbadger::app'],
+      require       => [Class['yrsbadger::app'], File[$gunicorn_config]],
   }
 }
